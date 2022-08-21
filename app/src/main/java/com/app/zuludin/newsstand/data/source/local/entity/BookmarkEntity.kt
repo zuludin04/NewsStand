@@ -22,5 +22,17 @@ data class BookmarkEntity(
     var publish: String,
 
     @ColumnInfo
-    var image: String
+    var image: String,
+
+    @ColumnInfo
+    var url: String,
+
+    @ColumnInfo
+    var description: String,
+
+    @ColumnInfo
+    var source: String,
+
+    @ColumnInfo
+    var content: String
 )

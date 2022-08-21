@@ -19,5 +19,17 @@ data class NewsEntity(
     var author: String,
 
     @ColumnInfo
-    var image: String
+    var image: String,
+
+    @ColumnInfo
+    var url: String,
+
+    @ColumnInfo
+    var description: String,
+
+    @ColumnInfo
+    var source: String,
+
+    @ColumnInfo
+    var content: String
 )
