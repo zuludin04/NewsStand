@@ -1,4 +1,7 @@
 package com.app.zuludin.newsstand
 
-class NewStandApplication {
-}
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class NewStandApplication : Application()
