@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.app.zuludin.newsstand.core.newsCategories
 import com.app.zuludin.newsstand.core.theme.NewsStandTheme
 import com.app.zuludin.newsstand.domain.model.News
 import com.app.zuludin.newsstand.ui.main.components.CategoryItem
@@ -114,6 +114,7 @@ fun NewsList(
                 SectionHeader(title = "Explore")
                 Spacer(modifier = Modifier.height(16.dp))
                 ExploreCategory()
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -203,16 +204,8 @@ fun ExploreCategory() {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp),
     ) {
-        items(5) {
-            CategoryItem()
+        items(newsCategories) {
+            CategoryItem(category = it)
         }
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = 0xfff5f5f5)
-@Composable
-fun PreviewHomeLayout() {
-    NewsStandTheme {
-
     }
 }
