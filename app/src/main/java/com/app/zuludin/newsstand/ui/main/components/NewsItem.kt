@@ -1,5 +1,6 @@
 package com.app.zuludin.newsstand.ui.main.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,11 +23,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.app.zuludin.newsstand.R
 import com.app.zuludin.newsstand.core.theme.Shapes
+import com.app.zuludin.newsstand.domain.model.News
 
 @Composable
-fun NewsItemHorizontal(modifier: Modifier = Modifier) {
+fun NewsItemHorizontal(
+    modifier: Modifier = Modifier,
+    news: News
+) {
     Surface(
         elevation = 4.dp,
         color = MaterialTheme.colors.surface,
@@ -38,10 +46,13 @@ fun NewsItemHorizontal(modifier: Modifier = Modifier) {
                 .width(320.dp)
         ) {
             Box {
-                Image(
-                    painter = painterResource(id = R.drawable.poster),
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(news.image)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = "",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .fillMaxWidth()
@@ -53,7 +64,7 @@ fun NewsItemHorizontal(modifier: Modifier = Modifier) {
                     modifier = Modifier.padding(8.dp)
                 ) {
                     Text(
-                        text = "Philosophy",
+                        text = news.source,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         color = Color.White,
                     )
@@ -62,7 +73,7 @@ fun NewsItemHorizontal(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                text = "8 Steps to Start Working on Project",
+                text = news.title,
                 style = MaterialTheme.typography.h6,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -83,8 +94,8 @@ fun NewsItemHorizontal(modifier: Modifier = Modifier) {
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
-                    Text(text = "Personal Growth", style = MaterialTheme.typography.subtitle2)
-                    Text(text = "10 Sept 2022", color = Color.Gray)
+                    Text(text = news.author, style = MaterialTheme.typography.subtitle2)
+                    Text(text = news.publish, color = Color.Gray)
                 }
             }
         }
@@ -153,7 +164,7 @@ fun NewsItemVertical(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun PreviewNewsItemHorizontal() {
-    NewsItemHorizontal()
+//    NewsItemHorizontal()
 }
 
 @Preview
