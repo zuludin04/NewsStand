@@ -1,6 +1,5 @@
 package com.app.zuludin.newsstand.ui.main.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -103,7 +102,10 @@ fun NewsItemHorizontal(
 }
 
 @Composable
-fun NewsItemVertical(modifier: Modifier = Modifier) {
+fun NewsItemVertical(
+    modifier: Modifier = Modifier,
+    news: News,
+) {
     Surface(
         elevation = 4.dp,
         color = MaterialTheme.colors.surface,
@@ -111,9 +113,12 @@ fun NewsItemVertical(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         Row(modifier = Modifier.padding(4.dp)) {
-            Image(
-                painter = painterResource(id = R.drawable.poster),
-                contentDescription = null,
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(news.image)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(130.dp)
@@ -127,13 +132,13 @@ fun NewsItemVertical(modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Philosophy", color = Color.Gray, fontSize = 13.sp)
-                    Text(text = "10 Sept 2022", color = Color.Gray, fontSize = 13.sp)
+                    Text(text = news.source, color = Color.Gray, fontSize = 13.sp)
+                    Text(text = news.publish, color = Color.Gray, fontSize = 13.sp)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    text = "8 Steps to Start Working on Project",
+                    text = news.title,
                     style = MaterialTheme.typography.subtitle1,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -154,21 +159,9 @@ fun NewsItemVertical(modifier: Modifier = Modifier) {
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Personal Growth", style = MaterialTheme.typography.subtitle2)
+                    Text(text = news.author, style = MaterialTheme.typography.subtitle2)
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewNewsItemHorizontal() {
-//    NewsItemHorizontal()
-}
-
-@Preview
-@Composable
-fun PreviewNewsItemVertical() {
-    NewsItemVertical()
 }

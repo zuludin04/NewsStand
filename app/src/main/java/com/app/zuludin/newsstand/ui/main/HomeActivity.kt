@@ -20,6 +20,7 @@ import com.app.zuludin.newsstand.core.theme.NewsStandTheme
 import com.app.zuludin.newsstand.domain.model.News
 import com.app.zuludin.newsstand.ui.main.components.CategoryItem
 import com.app.zuludin.newsstand.ui.main.components.NewsItemHorizontal
+import com.app.zuludin.newsstand.ui.main.components.NewsItemVertical
 import com.app.zuludin.newsstand.ui.main.components.SectionHeader
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -61,7 +62,8 @@ fun HomeNewsLayout(
         modifier = modifier
     ) { hasPostsUiState, contentModifier ->
         NewsList(
-            news = hasPostsUiState.news,
+            hottest = hasPostsUiState.news.hottest,
+            more = hasPostsUiState.news.more,
             modifier = contentModifier,
             state = homeListLazyListState
         )
@@ -88,7 +90,8 @@ fun HomeNewsLayout(
 
 @Composable
 fun NewsList(
-    news: List<News>,
+    hottest: List<News>,
+    more: List<News>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     state: LazyListState = rememberLazyListState()
@@ -106,7 +109,7 @@ fun NewsList(
             }
         }
         item {
-            HottestNews(news)
+            HottestNews(hottest)
         }
         item {
             Column {
@@ -116,6 +119,9 @@ fun NewsList(
                 ExploreCategory()
                 Spacer(modifier = Modifier.height(16.dp))
             }
+        }
+        items(more) {
+            NewsItemVertical(modifier = Modifier.padding(8.dp), news = it)
         }
     }
 }

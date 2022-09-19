@@ -3,7 +3,7 @@ package com.app.zuludin.newsstand.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.zuludin.newsstand.data.Resource
-import com.app.zuludin.newsstand.domain.model.News
+import com.app.zuludin.newsstand.domain.model.HomeNews
 import com.app.zuludin.newsstand.domain.repository.INewsStandRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -20,14 +20,14 @@ sealed interface MainNewsUiState {
     ) : MainNewsUiState
 
     data class HasNews(
-        val news: List<News>,
+        val news: HomeNews,
         override val isLoading: Boolean,
         override val errorMessages: List<String>
     ) : MainNewsUiState
 }
 
 private data class MainViewModelState(
-    val news: List<News>? = null,
+    val news: HomeNews? = null,
     val isLoading: Boolean = false,
     val errorMessages: List<String> = emptyList()
 ) {
@@ -68,7 +68,7 @@ class MainViewModel @Inject constructor(private val repository: INewsStandReposi
         viewModelState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            val result = repository.loadHeadlines().first()
+            val result = repository.loadHomeNews().first()
             viewModelState.update {
                 when (result) {
                     is Resource.Error -> it.copy(

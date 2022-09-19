@@ -6,6 +6,7 @@ import com.app.zuludin.newsstand.data.source.local.NewsStandLocalSource
 import com.app.zuludin.newsstand.data.source.remote.NewsStandRemoteSource
 import com.app.zuludin.newsstand.data.source.remote.api.ApiResponse
 import com.app.zuludin.newsstand.data.source.remote.response.ArticlesItem
+import com.app.zuludin.newsstand.domain.model.HomeNews
 import com.app.zuludin.newsstand.domain.model.News
 import com.app.zuludin.newsstand.domain.model.NewsSource
 import com.app.zuludin.newsstand.domain.repository.INewsStandRepository
@@ -21,6 +22,28 @@ class NewsStandRepository @Inject constructor(
     private val localSource: NewsStandLocalSource,
     private val appExecutors: AppExecutors
 ) : INewsStandRepository {
+    override fun loadHomeNews(): Flow<Resource<HomeNews>> {
+        return flow {
+            val hottestResponse = remoteSource.loadHeadlines().first()
+            val moreResponse = remoteSource.loadMoreNews().first()
+
+            if (hottestResponse is ApiResponse.Success && moreResponse is ApiResponse.Success) {
+                val hottest = hottestResponse.data
+                val more = moreResponse.data
+
+                val result = Resource.Success(
+                    HomeNews(
+                        hottest = DataMapper.mapNewsResponseToModel(hottest),
+                        more = DataMapper.mapNewsResponseToModel(more)
+                    )
+                )
+                emitAll(flowOf(result))
+            } else {
+                emit(Resource.Error("Error When Loading News Data"))
+            }
+        }
+    }
+
     override fun loadHeadlines(): Flow<Resource<List<News>>> =
         object : NetworkBoundResource<List<News>, List<ArticlesItem>>() {
             override fun loadFromDB(): Flow<List<News>> {

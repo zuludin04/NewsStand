@@ -1,11 +1,14 @@
 package com.app.zuludin.newsstand.domain.repository
 
 import com.app.zuludin.newsstand.data.Resource
+import com.app.zuludin.newsstand.domain.model.HomeNews
 import com.app.zuludin.newsstand.domain.model.News
 import com.app.zuludin.newsstand.domain.model.NewsSource
 import kotlinx.coroutines.flow.Flow
 
 interface INewsStandRepository {
+    fun loadHomeNews(): Flow<Resource<HomeNews>>
+
     fun loadHeadlines(): Flow<Resource<List<News>>>
 
     fun loadMoreNews(): Flow<Resource<List<News>>>

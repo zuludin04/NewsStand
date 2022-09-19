@@ -13,12 +13,12 @@ object DataMapper {
 
         news.map {
             val n = NewsEntity(
-                title = it.title ?:"",
+                title = it.title ?: "",
                 author = it.author ?: "",
                 image = it.urlToImage ?: "",
-                url = it.url?:"",
-                description = it.description?:"",
-                source = it.source?.name?:"",
+                url = it.url ?: "",
+                description = it.description ?: "",
+                source = it.source?.name ?: "",
                 content = it.content ?: "",
                 id = it.publishedAt!!
             )
@@ -71,14 +71,14 @@ object DataMapper {
 
         news.map {
             val n = News(
-                title = it.title!!,
+                title = it.title ?: "",
                 author = it.author ?: "",
-                image = it.urlToImage!!,
-                url = it.url!!,
-                description = it.description!!,
-                source = it.source?.name!!,
-                content = it.content!!,
-                publish = it.publishedAt!!
+                image = it.urlToImage ?: "",
+                url = it.url ?: "",
+                description = it.description ?: "",
+                source = it.source?.name ?: "",
+                content = it.content ?: "",
+                publish = it.publishedAt ?: ""
             )
             newsList.add(n)
         }
